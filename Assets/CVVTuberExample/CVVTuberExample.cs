@@ -94,18 +94,6 @@ namespace CVVTuberExample
             SceneManager.LoadScene("ShowOpenCVLicense");
         }
 
-        public void OnWebCamTextureCVVTuberExampleButtonClick()
-        {
-            if (GraphicsSettings.defaultRenderPipeline == null)
-            {
-                SceneManager.LoadScene("WebCamTextureCVVTuberExample_Built-in");
-            }
-            else
-            {
-                SceneManager.LoadScene("WebCamTextureCVVTuberExample_SRP");
-            }
-        }
-
         public void OnVideoCaptureCVVTuberExampleButtonClick()
         {
             if (GraphicsSettings.defaultRenderPipeline == null)
@@ -118,6 +106,17 @@ namespace CVVTuberExample
             }
         }
 
+        public void OnWebCamTextureCVVTuberExampleButtonClick()
+        {
+            if (GraphicsSettings.defaultRenderPipeline == null)
+            {
+                SceneManager.LoadScene("WebCamTextureCVVTuberExample_Built-in");
+            }
+            else
+            {
+                SceneManager.LoadScene("WebCamTextureCVVTuberExample_SRP");
+            }
+        }
 
         public void OnShowUnityChanLicenseButtonClick()
         {
