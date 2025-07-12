@@ -1,6 +1,8 @@
 using DlibFaceLandmarkDetector;
+using DlibFaceLandmarkDetector.UnityIntegration;
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgprocModule;
+using OpenCVForUnity.UnityIntegration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -111,7 +113,7 @@ namespace CVVTuber
             }
             else
             {
-                getFilePath_Coroutine = DlibFaceLandmarkDetector.UnityUtils.Utils.getFilePathAsync(dlibShapePredictorMobileFilePath, (result) =>
+                getFilePath_Coroutine = OpenCVEnv.GetFilePathCoroutine(dlibShapePredictorMobileFilePath, (result) =>
                 {
                     getFilePath_Coroutine = null;
 
@@ -130,7 +132,7 @@ namespace CVVTuber
             }
             else
             {
-                dlibShapePredictorFileFullPath = DlibFaceLandmarkDetector.UnityUtils.Utils.getFilePath(dlibShapePredictorMobileFilePath);
+                dlibShapePredictorFileFullPath = OpenCVEnv.GetFilePath(dlibShapePredictorMobileFilePath);
             }
 #else
             Uri uri;
@@ -140,7 +142,7 @@ namespace CVVTuber
             }
             else
             {
-                dlibShapePredictorFileFullPath = DlibFaceLandmarkDetector.UnityUtils.Utils.getFilePath(dlibShapePredictorFilePath);
+                dlibShapePredictorFileFullPath = OpenCVEnv.GetFilePath(dlibShapePredictorFilePath);
             }
 #endif     
 
@@ -222,7 +224,7 @@ namespace CVVTuber
                             faceRect.width * 0.9f,
                             faceRect.height * 0.9f);
 
-                        OpenCVForUnityUtils.SetImage(faceLandmarkDetector, rgbaMat);
+                        DlibOpenCVUtils.SetImage(faceLandmarkDetector, rgbaMat);
                         List<Vector2> points = faceLandmarkDetector.DetectLandmark(faceRect);
 
                         faceLandmarkPoints = points;
@@ -230,17 +232,17 @@ namespace CVVTuber
                         didUpdateFaceLanmarkPoints = true;
 
                         if (isDebugMode && screen != null)
-                            OpenCVForUnityUtils.DrawFaceLandmark(debugMat, points, new Scalar(0, 255, 0, 255), 2);
+                            DlibOpenCVUtils.DrawFaceLandmark(debugMat, points, new Scalar(0, 255, 0, 255), 2);
                     }
                 }
                 else
                 {
 
                     //detect face rects
-                    OpenCVForUnityUtils.SetImage(faceLandmarkDetector, downScaleRgbaMat);
+                    DlibOpenCVUtils.SetImage(faceLandmarkDetector, downScaleRgbaMat);
                     List<UnityEngine.Rect> detectResult = faceLandmarkDetector.Detect();
 
-                    OpenCVForUnityUtils.SetImage(faceLandmarkDetector, rgbaMat);
+                    DlibOpenCVUtils.SetImage(faceLandmarkDetector, rgbaMat);
                     if (detectResult.Count > 0)
                     {
 
@@ -262,7 +264,7 @@ namespace CVVTuber
                         didUpdateFaceLanmarkPoints = true;
 
                         if (isDebugMode && screen != null)
-                            OpenCVForUnityUtils.DrawFaceLandmark(debugMat, points, new Scalar(0, 255, 0, 255), 2);
+                            DlibOpenCVUtils.DrawFaceLandmark(debugMat, points, new Scalar(0, 255, 0, 255), 2);
                     }
                 }
 
@@ -270,7 +272,7 @@ namespace CVVTuber
 
                 if (isDebugMode && screen != null)
                 {
-                    OpenCVForUnity.UnityUtils.Utils.matToTexture2D(debugMat, debugTexture, debugColors);
+                    OpenCVMatUtils.MatToTexture2D(debugMat, debugTexture, debugColors);
                 }
             }
         }

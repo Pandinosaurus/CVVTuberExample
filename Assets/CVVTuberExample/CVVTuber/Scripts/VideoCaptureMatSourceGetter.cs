@@ -1,6 +1,7 @@
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgprocModule;
-using OpenCVForUnity.UnityUtils.Helper;
+using OpenCVForUnity.UnityIntegration;
+using OpenCVForUnity.UnityIntegration.Helper.Optimization;
 using OpenCVForUnity.VideoioModule;
 using System;
 using System.Collections;
@@ -65,7 +66,7 @@ namespace CVVTuber
                 getFilePath_Coroutine = GetFilePath();
                 StartCoroutine(getFilePath_Coroutine);
 #else
-                videoFileFullPath = OpenCVForUnity.UnityUtils.Utils.getFilePath(videoFilePath);
+                videoFileFullPath = OpenCVEnv.GetFilePath(videoFilePath);
                 Run();
 #endif
             }
@@ -141,7 +142,7 @@ namespace CVVTuber
 #if UNITY_WEBGL
         protected virtual IEnumerator GetFilePath()
         {
-            var getFilePathAsync_Coroutine = OpenCVForUnity.UnityUtils.Utils.getFilePathAsync(videoFilePath, (result) =>
+            var getFilePathAsync_Coroutine = OpenCVEnv.GetFilePathCoroutine(videoFilePath, (result) =>
             {
                 videoFileFullPath = result;
             });
@@ -235,7 +236,7 @@ namespace CVVTuber
 
         public virtual float GetDownScaleRatio()
         {
-            return imageOptimizationHelper.downscaleRatio;
+            return imageOptimizationHelper.DownscaleRatio;
         }
 
         #endregion

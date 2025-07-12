@@ -1,6 +1,7 @@
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgprocModule;
 using OpenCVForUnity.ObjdetectModule;
+using OpenCVForUnity.UnityIntegration;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -93,7 +94,7 @@ namespace CVVTuber
             else
             {
 #if UNITY_WEBGL
-                getFilePath_Coroutine = OpenCVForUnity.UnityUtils.Utils.getFilePathAsync(openCVCascadeFilePath, (result) =>
+                getFilePath_Coroutine = OpenCVEnv.GetFilePathCoroutine(openCVCascadeFilePath, (result) =>
                 {
                     getFilePath_Coroutine = null;
 
@@ -102,7 +103,7 @@ namespace CVVTuber
                 });
                 StartCoroutine(getFilePath_Coroutine);
 #else
-                openCVCascadeFileFullPath = OpenCVForUnity.UnityUtils.Utils.getFilePath(openCVCascadeFilePath);
+                openCVCascadeFileFullPath = OpenCVEnv.GetFilePath(openCVCascadeFilePath);
                 Run();
 #endif
             }
@@ -212,7 +213,7 @@ namespace CVVTuber
 
                 if (isDebugMode && screen != null)
                 {
-                    OpenCVForUnity.UnityUtils.Utils.matToTexture2D(debugMat, debugTexture, debugColors);
+                    OpenCVMatUtils.MatToTexture2D(debugMat, debugTexture, debugColors);
                 }
             }
         }

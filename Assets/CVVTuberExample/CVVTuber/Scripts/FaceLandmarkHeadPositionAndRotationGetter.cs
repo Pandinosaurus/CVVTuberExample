@@ -1,8 +1,9 @@
 using OpenCVForUnity.Calib3dModule;
 using OpenCVForUnity.CoreModule;
-using OpenCVForUnity.UnityUtils;
+using OpenCVForUnity.UnityIntegration;
 using System.Collections.Generic;
 using UnityEngine;
+using static OpenCVForUnity.UnityIntegration.OpenCVARUtils;
 
 namespace CVVTuber
 {
@@ -255,19 +256,19 @@ namespace CVVTuber
                     rvec.get(0, 0, rvecArr);
                     double[] tvecArr = new double[3];
                     tvec.get(0, 0, tvecArr);
-                    PoseData poseData = ARUtils.ConvertRvecTvecToPoseData(rvecArr, tvecArr);
+                    PoseData poseData = OpenCVARUtils.ConvertRvecTvecToPoseData(rvecArr, tvecArr);
 
                     // adjust the position to the scale of real-world space.
-                    poseData.pos = new Vector3(poseData.pos.x * 0.001f, poseData.pos.y * 0.001f, poseData.pos.z * 0.001f);
+                    poseData.Pos = new Vector3(poseData.Pos.x * 0.001f, poseData.Pos.y * 0.001f, poseData.Pos.z * 0.001f);
 
                     // Changes in pos/rot below these thresholds are ignored.
                     if (enableLowPassFilter)
                     {
-                        ARUtils.LowpassPoseData(ref oldPoseData, ref poseData, positionLowPass, rotationLowPass);
+                        OpenCVARUtils.LowpassPoseData(ref oldPoseData, ref poseData, positionLowPass, rotationLowPass);
                     }
                     oldPoseData = poseData;
 
-                    Matrix4x4 transformationM = Matrix4x4.TRS(poseData.pos, poseData.rot, Vector3.one);
+                    Matrix4x4 transformationM = Matrix4x4.TRS(poseData.Pos, poseData.Rot, Vector3.one);
 
                     // right-handed coordinates system (OpenCV) to left-handed one (Unity)
                     // https://stackoverflow.com/questions/30234945/change-handedness-of-a-row-major-4x4-transformation-matrix
@@ -276,8 +277,8 @@ namespace CVVTuber
                     // Apply Y-axis and Z-axis refletion matrix. (Adjust the posture of the AR object)
                     transformationM = transformationM * invertYM * invertZM;
 
-                    headPosition = ARUtils.ExtractTranslationFromMatrix(ref transformationM);
-                    headRotation = ARUtils.ExtractRotationFromMatrix(ref transformationM);
+                    headPosition = OpenCVARUtils.ExtractTranslationFromMatrix(ref transformationM);
+                    headRotation = OpenCVARUtils.ExtractRotationFromMatrix(ref transformationM);
 
                     didUpdateHeadPositionAndRotation = true;
                 }
@@ -366,7 +367,7 @@ namespace CVVTuber
             camMatrix.put(0, 0, arr);
 
             // create AR camera P * V Matrix
-            Matrix4x4 P = ARUtils.CalculateProjectionMatrixFromCameraMatrixValues((float)fx, (float)fy, (float)cx, (float)cy, width, height, 1f, 3000f);
+            Matrix4x4 P = OpenCVARUtils.CalculateProjectionMatrixFromCameraMatrixValues((float)fx, (float)fy, (float)cx, (float)cy, width, height, 1f, 3000f);
             Matrix4x4 V = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(1, 1, -1));
             VP = P * V;
         }

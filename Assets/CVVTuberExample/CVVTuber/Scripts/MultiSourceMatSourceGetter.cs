@@ -1,5 +1,6 @@
 using OpenCVForUnity.CoreModule;
-using OpenCVForUnity.UnityUtils.Helper;
+using OpenCVForUnity.UnityIntegration.Helper.Optimization;
+using OpenCVForUnity.UnityIntegration.Helper.Source2Mat;
 using UnityEngine;
 
 namespace CVVTuber
@@ -103,7 +104,7 @@ namespace CVVTuber
             if (imageOptimizationHelper == null)
                 return default;
 
-            return imageOptimizationHelper.downscaleRatio;
+            return imageOptimizationHelper.DownscaleRatio;
         }
 
         #endregion
@@ -151,14 +152,14 @@ namespace CVVTuber
             }
             if (nextCameraIndex != -1)
             {
-                multiSource2MatHelper.requestedDeviceName = nextCameraIndex.ToString();
+                multiSource2MatHelper.RequestedDeviceName = nextCameraIndex.ToString();
             }
             else
             {
-                multiSource2MatHelper.requestedIsFrontFacing = !multiSource2MatHelper.requestedIsFrontFacing;
+                multiSource2MatHelper.RequestedIsFrontFacing = !multiSource2MatHelper.RequestedIsFrontFacing;
             }
 #else
-            multiSource2MatHelper.requestedIsFrontFacing = !multiSource2MatHelper.requestedIsFrontFacing;
+            multiSource2MatHelper.RequestedIsFrontFacing = !multiSource2MatHelper.RequestedIsFrontFacing;
 #endif
         }
     }
